@@ -1,14 +1,29 @@
 pipeline{
 
-  agent {
-    node {
-      label 'node-nodejs'
+  pipeline{
+
+    agent {
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: shell
+    image: alledovalero/jenkins-nodo-nodejs-bootcamp:1.0
+    command:
+    - sleep
+    args:
+    - infinity
+'''
+            defaultContainer 'shell'
+        }
     }
-  }
+
 
   environment {
-    registryCredential='docker-hub-credentials'
-    registryFrontend = 'franaznarteralco/frontend-demo'
+    registryCredential='jenkins_dockerhub'
+    registryFrontend = 'juanllorenzogomis/frontend-demo'
   }
 
   stages {
@@ -18,28 +33,7 @@ pipeline{
       }
     }
 
-    stage('SonarQube analysis') {
-      steps {
-        withSonarQubeEnv(credentialsId: "sonarqube-credentials", installationName: "sonarqube-server"){
-          sh 'npm run sonar'
-        }
-      }
-    }
-
-    stage('Quality Gate') {
-      steps {
-        timeout(time: 10, unit: "MINUTES") {
-          script {
-            def qg = waitForQualityGate()
-            if (qg.status != 'OK') {
-               error "Pipeline aborted due to quality gate failure: ${qg.status}"
-            }
-          }
-        }
-      }
-    }
-
-    stage('Push Image to Docker Hub') {
+   stage('Push Image to Docker Hub') {
       steps {
         script {
           dockerImage = docker.build registryFrontend + ":$BUILD_NUMBER"
@@ -69,7 +63,7 @@ pipeline{
             sh 'rm -r configuracion'
           }
         }
-        sh 'git clone https://github.com/dberenguerdevcenter/kubernetes-helm-docker-config.git configuracion --branch test-implementation'
+        sh 'git clone https://github.com/JuanLLorenzoG/angular-14-app.git configuracion --branch test-implementation'
         sh 'kubectl apply -f configuracion/kubernetes-deployment/angular-14-app/manifest.yml -n default --kubeconfig=configuracion/kubernetes-config/config'
       }
 
