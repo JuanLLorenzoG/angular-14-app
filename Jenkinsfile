@@ -1,7 +1,5 @@
 pipeline{
 
-  pipeline{
-
     agent {
         kubernetes {
             yaml '''
