@@ -39,7 +39,8 @@ spec:
       steps {
         sh 'npm install'
 	sh 'npm run build &'
-	sleep 15 
+	sleep 15
+	sh 'ls -la' 
       }
     }
 
