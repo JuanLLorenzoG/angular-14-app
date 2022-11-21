@@ -40,6 +40,8 @@ spec:
         sh 'npm install'
 	sh 'npm run build &'
 	sleep 15
+	sh 'ls -la'
+	sh 'cd src'
 	sh 'ls -la' 
       }
     }
