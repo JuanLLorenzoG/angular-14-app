@@ -39,7 +39,7 @@ spec:
       steps {
         sh 'npm install'
 	sh 'npm run build &'
-	sh 'sleep 15'
+	sleep 15 
       }
     }
 
