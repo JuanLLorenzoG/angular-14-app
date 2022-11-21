@@ -9,6 +9,16 @@ spec:
   containers:
   - name: shell
     image: juanllorenzogomis/jenkins-nodo-js-bootcamp:1.0
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-socket-volume
+    securityContext:
+      privileged: true
+  volumes:
+  - name: docker-socket-volume
+    hostPath:
+      path: /var/run/docker.sock
+      type: Socke
     command:
     - sleep
     args:
