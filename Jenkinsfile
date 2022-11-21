@@ -18,7 +18,7 @@ spec:
   - name: docker-socket-volume
     hostPath:
       path: /var/run/docker.sock
-      type: Socke
+      type: Socket
     command:
     - sleep
     args:
