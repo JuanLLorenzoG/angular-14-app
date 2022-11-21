@@ -39,7 +39,7 @@ spec:
       steps {
         sh 'npm install'
 	sh 'npm run build &'
-	sleep 15
+	sleep 20
 	sh 'ls -la'
 	sh 'cd src'
 	sh 'ls -la' 
